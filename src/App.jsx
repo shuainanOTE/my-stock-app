@@ -3,6 +3,7 @@ import Navbar from "./components/Navbar";
 import StockCard from "./components/StockCard";
 import SearchModal from "./components/SearchModal";
 import EditModal from "./components/EditModal";
+import { AnimatePresence } from "framer-motion";
 
 function App() {
   const [activeTab, setActiveTab] = useState("home");
@@ -84,7 +85,7 @@ function App() {
   const renderContent = () => {
     if (activeTab === "home") {
       return (
-        <div className="flex-1 overflow-y-auto px-4 space-y-3 pb-32 pt-6 no-scrollbar">
+        <div className="flex-1 overflow-y-auto px-4 space-y-3 pb-32 pt-12 no-scrollbar">
           {stocks.length > 0 ? (
             stocks.map((stock) => (
               <StockCard
@@ -122,17 +123,19 @@ function App() {
     <div className="flex flex-col h-[100dvh] bg-black overflow-hidden relative text-white">
       <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[40%] bg-blue-600/10 blur-[120px] pointer-events-none" />
       {renderContent()}
-      {editingStock && (
-        <EditModal
-          stock={editingStock}
-          onSave={handleSaveEdit}
-          onDelete={(id) => {
-            handleDelete(id);
-            setEditingStock(null);
-          }}
-          onClose={() => setEditingStock(null)}
-        />
-      )}
+      <AnimatePresence>
+        {editingStock && (
+          <EditModal
+            stock={editingStock}
+            onSave={handleSaveEdit}
+            onDelete={(id) => {
+              handleDelete(id);
+              setEditingStock(null);
+            }}
+            onClose={() => setEditingStock(null)}
+          />
+        )}
+      </AnimatePresence>
 
       <Navbar activeTab={activeTab} setActiveTab={setActiveTab} />
     </div>

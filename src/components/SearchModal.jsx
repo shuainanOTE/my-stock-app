@@ -44,7 +44,6 @@ const SearchModal = ({ onAddStock, onClose }) => {
           <div className="flex-1 bg-[#2C2C2E] rounded-xl px-3 py-2 flex items-center gap-2 border border-white/5">
             <Search size={18} className="text-gray-500" />
             <input
-              autoFocus
               type="text"
               placeholder="搜尋股票代號或名稱"
               className="bg-transparent border-none outline-none text-white text-sm w-full"

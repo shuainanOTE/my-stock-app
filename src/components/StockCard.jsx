@@ -33,7 +33,7 @@ const StockCard = ({ stock, onClick, onDelete }) => {
           e.stopPropagation();
           onDelete(stock.id);
         }}
-        className="absolute right-0 top-0 bottom-0 w-20 flex items-center justify-center text-white active:opacity-60"
+        className="absolute right-0 top-0 bottom-0 w-20 flex items-center justify-center text-white active:bg-black/20 transition-colors"
       >
         <Trash2 size={24} />
       </button>
@@ -41,11 +41,12 @@ const StockCard = ({ stock, onClick, onDelete }) => {
       <motion.div
         drag="x"
         animate={controls}
+        whileTap={{ backgroundColor: "#2C2C2E" }}
+        transition={{ duration: 0.1 }}
         dragConstraints={{ left: -80, right: 0 }}
         dragElastic={{ left: 0.1, right: 0 }}
         onDragEnd={handleDragEnd}
-        dragTransition={{ bounceStiffness: 600, bounceDamping: 35 }}
-        className="relative z-10 bg-[#1C1C1E] p-5 flex justify-between items-center touch-pan-y shadow-sm"
+        className="relative z-10 bg-[#1C1C1E] p-5 flex justify-between items-center touch-pan-y"
         onClick={() => {
           controls.start({ x: 0 });
           onClick();

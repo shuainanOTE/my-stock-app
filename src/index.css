@@ -26,3 +26,16 @@ html, body {
   height: 100%;
   width: 100%;
 }
+
+* {
+  /* 移除點擊後的灰色陰影 (我們自己做效果) */
+  -webkit-tap-highlight-color: transparent;
+  /* 讓觸控反應更靈敏 */
+  touch-action: manipulation;
+}
+
+button, a {
+  /* 確保按鈕在手機上不會有奇怪的預設邊框 */
+  outline: none;
+  cursor: pointer;
+}
