@@ -21,14 +21,20 @@ function App() {
   }, [stocks]);
 
   const refreshPrices = async (targetStocks = stocks) => {
-    if (targetStocks.length === 0) return;
-    setLoading(true);
-    try {
-      const today = new Date().toISOString().split("T")[0];
-      const updatedStocks = await Promise.all(
-        targetStocks.map(async (stock) => {
+  if (targetStocks.length === 0) return;
+  setLoading(true);
+  try {
+    const date = new Date();
+    date.setDate(date.getDate() - 3); 
+    const startDate = date.toISOString().split("T")[0];
+    const updatedStocks = await Promise.all(
+      targetStocks.map(async (stock) => {
+        if (stock.type === "fund") {
+          const latestNav = await fetchFundPrice(stock.id);
+          return latestNav ? { ...stock, price: latestNav } : stock;
+        } else {
           try {
-            const url = `https://api.finmindtrade.com/api/v4/data?dataset=TaiwanStockPrice&data_id=${stock.id}&start_date=${today}`;
+            const url = `https://api.finmindtrade.com/api/v4/data?dataset=TaiwanStockPrice&data_id=${stock.id}&start_date=${startDate}`;
             const response = await fetch(url);
             const res = await response.json();
             if (res.data && res.data.length > 0) {
@@ -38,16 +44,17 @@ function App() {
           } catch (e) {
             console.error(`${stock.name} 抓取失敗`);
           }
-          return stock;
-        }),
-      );
-      setStocks(updatedStocks);
-    } catch (error) {
-      console.error("更新報價失敗", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+        }
+        return stock;
+      })
+    );
+    setStocks(updatedStocks);
+  } catch (error) {
+    console.error("更新報價失敗", error);
+  } finally {
+    setLoading(false);
+  }
+};
 
   useEffect(() => {
     refreshPrices();
