@@ -9,7 +9,8 @@ const SearchModal = ({ onAddStock, onClose }) => {
   useEffect(() => {
     const fetchStockList = async () => {
       try {
-        const response = await fetch("https://api.finmindtrade.com/api/v4/data?dataset=TaiwanStockInfo");
+        const token = import.meta.env.VITE_FINMIND_TOKEN;
+        const response = await fetch(`https://api.finmindtrade.com/api/v4/data?dataset=TaiwanStockInfo&token=${token}`);
         const res = await response.json();
         if (res.data) {
           const formatted = res.data.map(s => ({
